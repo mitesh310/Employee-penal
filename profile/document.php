@@ -1,8 +1,7 @@
-
 <?php
 $pageName = "Profile";
 
-include("../include/header.php");
+include ("../include/header.php");
 ?>
 
 
@@ -16,12 +15,14 @@ include("../include/header.php");
     background-color: rgb(9, 175, 244);
     border-color: transparent;
   }
-  .nav-settings .nav-link:hover{
+
+  .nav-settings .nav-link:hover {
     color: #09aff4;
   }
-  .nav-settings .nav-link.active{
-      color: #09aff4;
-    }
+
+  .nav-settings .nav-link.active {
+    color: #09aff4;
+  }
 </style>
 <div class="content-wrapper">
   <div class="content"><!-- Card Profile -->
@@ -33,7 +34,9 @@ include("../include/header.php");
 
         <div class="profile-avata">
           <img class="rounded-circle" src="../images/user/user-md-01.jpg" alt="Avata Image">
-          <a class="h5 d-block mt-3 mb-2" href="#"><?php echo $_SESSION['name']; ?></a>
+          <a class="h5 d-block mt-3 mb-2" href="#">
+            <?php echo $_SESSION['name']; ?>
+          </a>
         </div>
       </div>
     </div>
@@ -121,78 +124,6 @@ include("../include/header.php");
             </form>
           </div>
         </div>
-
-        <!-- <div class="card card-default">
-
-                  <div class="card-header">
-                    <h2>Social Networks</h2>
-
-                  </div>
-
-                  <div class="card-body">
-                    <div class="media media-sm">
-                      <div class="media-body">
-                        <div class="row">
-
-                          <div class="col-lg-6">
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon facebook mr-2">
-                                <i class="mdi mdi-facebook"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Facebook username">
-                            </div>
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon google-plus mr-2">
-                                <i class="mdi mdi-google-plus"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Google plus username">
-                            </div>
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon vimeo mr-2">
-                                <i class="mdi mdi-vimeo"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Vimeo username">
-                            </div>
-
-                          </div>
-
-                          <div class="col-lg-6">
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon twitter mr-2">
-                                <i class="mdi mdi-twitter"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Twitter username">
-                            </div>
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon linkedin mr-2">
-                                <i class="mdi mdi-linkedin"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Linkedin username">
-                            </div>
-
-                            <div class="d-flex mb-5">
-                              <button type="button" class="btn btn-icon pinterest mr-2">
-                                <i class="mdi mdi-pinterest"></i>
-                              </button>
-                              <input type="text" class="form-control" placeholder="Pinterest username">
-                            </div>
-
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div> -->
-
-
-
       </div>
 
     </div>
@@ -200,5 +131,5 @@ include("../include/header.php");
 </div>
 
 <?php
-include("../include/footer.php");
+include ("../include/footer.php");
 ?>

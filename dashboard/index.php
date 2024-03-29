@@ -1,20 +1,22 @@
 <?php
 $pageName = "Dashboard";
-include("../include/header.php");
-include("../include/notification.php");
+include ("../include/header.php");
+include ("../include/notification.php");
 
 $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://localhost:8080/getallholidays',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'GET',
-)
+curl_setopt_array(
+  $curl,
+  array(
+    CURLOPT_URL => 'http://localhost:8080/getallholidays',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+  )
 );
 
 $response = curl_exec($curl);
@@ -41,23 +43,21 @@ curl_setopt_array($curl, array(
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => 'POST',
   CURLOPT_POSTFIELDS => array(
-    'month' =>  $currentMonth,
+    'month' => $currentMonth,
     'year' => $currentYear,
     "employeeId" => $_SESSION['employeeId']
   ),
-));
+)
+);
 
 $response = curl_exec($curl);
 $resultpresentarray = json_decode($response, true);
-foreach($resultpresentarray['data'] as $attend)
-{
-   if($attend['attendenceStatus']=='present')
-   {
-      $presentarray[] = "1";
-   }
-   else{
-     $absentarray[] = "1";
-   }
+foreach ($resultpresentarray['data'] as $attend) {
+  if ($attend['attendenceStatus'] == 'present') {
+    $presentarray[] = "1";
+  } else {
+    $absentarray[] = "1";
+  }
 }
 curl_close($curl);
 
@@ -65,35 +65,7 @@ curl_close($curl);
 
 
 <?php
-// $clockin_status = "";
-// $curl = curl_init();
 
-// curl_setopt_array($curl, array(
-//   CURLOPT_URL => 'http://localhost:8080/clockinstatus',
-//   CURLOPT_RETURNTRANSFER => true,
-//   CURLOPT_ENCODING => '',
-//   CURLOPT_MAXREDIRS => 10,
-//   CURLOPT_TIMEOUT => 0,
-//   CURLOPT_FOLLOWLOCATION => true,
-//   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//   CURLOPT_CUSTOMREQUEST => 'POST',
-//   CURLOPT_POSTFIELDS => '{
-//   "employeeId":"' . $_SESSION['employeeId'] . '"
-// }',
-//   CURLOPT_HTTPHEADER => array(
-//     'Content-Type: application/json'
-//   ),
-// )
-// );
-
-// $response = curl_exec($curl);
-// curl_close($curl);
-// $resultArray1 = json_decode($response, true);
-// if ($resultArray1['status'] == '200') {
-//   $clockin_status = true;
-// } else {
-//   $clockin_status = false;
-// }
 
 if (isset($_POST['reqSubmit'])) {
   $fromTime = $_POST['fromTime'];
@@ -105,28 +77,30 @@ if (isset($_POST['reqSubmit'])) {
 
   $curl = curl_init();
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://localhost:8080/createrequest',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => array(
-      'employeeId' => $_SESSION['employeeId'],
-      'type' => 'clocktime',
-      'description' => $reason,
-      'Date' => $fromDate,
-      'keyname' => $fromTime == "" ? 'clockOut' : 'clockIn',
-      'value' => $fromTime == "" ? $toTime : $fromTime
-    ),
-  )
+  curl_setopt_array(
+    $curl,
+    array(
+      CURLOPT_URL => 'http://localhost:8080/createrequest',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => array(
+        'employeeId' => $_SESSION['employeeId'],
+        'type' => 'clocktime',
+        'description' => $reason,
+        'Date' => $fromDate,
+        'keyname' => $fromTime == "" ? 'clockOut' : 'clockIn',
+        'value' => $fromTime == "" ? $toTime : $fromTime
+      ),
+    )
   );
 
   $response = curl_exec($curl);
-  addnotification($_SESSION['employeeId'],"clocktime",$fromTime,$reason);
+  addnotification($_SESSION['employeeId'], "clocktime", $fromTime, $reason);
   curl_close($curl);
   // echo $response;
 }
@@ -135,16 +109,18 @@ if (isset($_POST['reqSubmit'])) {
 
 $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://localhost:8080/getprojectsbyempid/' . $_SESSION['employeeId'],
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'GET',
-)
+curl_setopt_array(
+  $curl,
+  array(
+    CURLOPT_URL => 'http://localhost:8080/getprojectsbyempid/' . $_SESSION['employeeId'],
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+  )
 );
 
 $response = curl_exec($curl);
@@ -153,8 +129,7 @@ curl_close($curl);
 // echo $response;
 ?>
 <?php
-if(isset($_GET['clockId']))
-{
+if (isset($_GET['clockId'])) {
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
@@ -166,56 +141,57 @@ if(isset($_GET['clockId']))
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS =>'{
-    "employeeId":"'.$_SESSION['employeeId'].'"   
+    CURLOPT_POSTFIELDS => '{
+    "employeeId":"' . $_SESSION['employeeId'] . '"   
   }',
     CURLOPT_HTTPHEADER => array(
       'Content-Type: application/json'
     ),
-  ));
-  
+  )
+  );
+
   $response = curl_exec($curl);
-  
+
   curl_close($curl);
   echo $response;
 
-setcookie('clockin', '', time() - 3600, '/');
-unset($_COOKIE['clockin']);
-header("location:../dashboard/");
+  setcookie('clockin', '', time() - 3600, '/');
+  unset($_COOKIE['clockin']);
+  header("location:../dashboard/");
 }
 
 ?>
 
 
 <?php
-if(isset($_GET['breakId']))
-{
-$curl = curl_init();
+if (isset($_GET['breakId'])) {
+  $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://localhost:8080/breakend',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS =>'{
-    "employeeId":"'.$_SESSION['employeeId'].'"
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://localhost:8080/breakend',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => '{
+    "employeeId":"' . $_SESSION['employeeId'] . '"
 }',
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json'
-  ),
-));
+    CURLOPT_HTTPHEADER => array(
+      'Content-Type: application/json'
+    ),
+  )
+  );
 
-$response = curl_exec($curl);
+  $response = curl_exec($curl);
 
-curl_close($curl);
-echo $response;
-setcookie('breakin', '', time() - 3600, '/');
-unset($_COOKIE['breakin']);
-header("location:../dashboard/");
+  curl_close($curl);
+  echo $response;
+  setcookie('breakin', '', time() - 3600, '/');
+  unset($_COOKIE['breakin']);
+  header("location:../dashboard/");
 }
 ?>
 <?php
@@ -231,7 +207,8 @@ curl_setopt_array($curl, array(
   CURLOPT_FOLLOWLOCATION => true,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => 'GET',
-));
+)
+);
 
 $response = curl_exec($curl);
 $leave = json_decode($response, true);
@@ -245,9 +222,10 @@ curl_close($curl);
     margin-left: auto;
     margin-right: auto;
   }
+
   .error {
-        color: #FF0000 !important;
-    }
+    color: #FF0000 !important;
+  }
 </style>
 
 <div class="content-wrapper">
@@ -261,11 +239,15 @@ curl_close($curl);
             <div class="row">
               <div class="col-md-4 col-xl-4">
                 <h5 class="text-success text-center">Present</h5>
-                <h1 class="text-success text-center"><b><?php echo count($presentarray); ?></b></h1>
+                <h1 class="text-success text-center"><b>
+                    <?php echo count($presentarray); ?>
+                  </b></h1>
               </div>
               <div class="col-md-4 col-xl-4">
                 <h5 class="text-danger text-center">Absent</h5>
-                <h1 class="text-danger text-center"><b><?php echo count($absentarray); ?></b></h1>
+                <h1 class="text-danger text-center"><b>
+                    <?php echo count($absentarray); ?>
+                  </b></h1>
               </div>
             </div>
           </div>
@@ -314,16 +296,11 @@ curl_close($curl);
             <div class="row">
               <div class="col-md-4 col-xl-4">
                 <h5 class="text-success text-center">No. Of Leave</h5>
-                <h1 class="text-success text-center"><b><?php echo count($leave['data']); ?></b></h1>
+                <h1 class="text-success text-center"><b>
+                    <?php echo count($leave['data']); ?>
+                  </b></h1>
               </div>
-              <!-- <div class="col-md-4 col-xl-4">
-                <h5 class="text-danger text-center">Used</h5>
-                <h1 class="text-danger text-center"><b>0.5</b></h1>
-              </div>
-              <div class="col-md-4 col-xl-4">
-                <h5 class="text-warning text-center">Remaining</h5>
-                <h1 class="text-warning text-center"><b>0.5</b></h1>
-              </div> -->
+
             </div>
 
           </div>
@@ -377,56 +354,33 @@ curl_close($curl);
               <?php echo $_SESSION['name']; ?>
             </h5>
             <hr>
-            <!-- <div class="row">
-              <div class="col-lg-12 col-xl-12">
-                <div class="card card-default">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6 col-xl-6">
-                        <h5 class="text-success text-center">Total Time</h5>
-                        <div id="divstyle">
-                          <div id="timer">
-                          <span id="hours">00:</span>
-                          <span id="mins">00:</span>
-                          <span id="seconds">00</span>
-                          </div>
-                      </div>
-                      <div class="col-md-6 col-xl-6">
-                        <h5 class="text-danger text-center">Break Time</h5>
-                        <h4 class="text-center">00:00:00</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+
             <div class="row">
-           
-                <div class="col-md-6 col-xl-6 text-center">
-                  <button type="button" id="clock_in" class="btn btn-lg btn-success" <?php 
-             if(isset($_COOKIE['clockin'])) { 
-              echo "disabled";
-             }
-                 ?> >Clock In</button>
-                </div>
-               
+
               <div class="col-md-6 col-xl-6 text-center">
-               <a href="?clockId=1"  onclick="return confirm('Are you sure you want to Clock_Out.')"> <button type="button" id="clock_out"
-                  class="btn btn-lg btn-danger" >Clock Out</button></a>
+                <button type="button" id="clock_in" class="btn btn-lg btn-success" <?php
+                if (isset($_COOKIE['clockin'])) {
+                  echo "disabled";
+                }
+                ?>>Clock In</button>
+              </div>
+
+              <div class="col-md-6 col-xl-6 text-center">
+                <a href="?clockId=1" onclick="return confirm('Are you sure you want to Clock_Out.')"> <button
+                    type="button" id="clock_out" class="btn btn-lg btn-danger">Clock Out</button></a>
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-md-6 col-xl-6 text-center">
-                <button type="button" id="break_in"
-                  class="btn btn-lg btn-success"  <?php 
-             if(isset($_COOKIE['breakin'])) { 
-              echo "disabled";
-             }
-                 ?>>Break in</button>
+                <button type="button" id="break_in" class="btn btn-lg btn-success" <?php
+                if (isset($_COOKIE['breakin'])) {
+                  echo "disabled";
+                }
+                ?>>Break in</button>
               </div>
               <div class="col-md-6 col-xl-6 text-center">
-               <a href="?breakId=1" onclick="return confirm('Are you sure you want to Break_Out.')"> <button type="button"
-                  class="btn btn-lg btn-danger">Break out</button></a>
+                <a href="?breakId=1" onclick="return confirm('Are you sure you want to Break_Out.')"> <button
+                    type="button" class="btn btn-lg btn-danger">Break out</button></a>
               </div>
             </div>
             <div class="row">
@@ -449,7 +403,7 @@ curl_close($curl);
 
                     <div class="modal-body pt-0">
                       <form method="post" id="project_form" enctype="multipart/form-data">
-                      <div class="form-group">
+                        <div class="form-group">
                           <label for="exampleFormControlInput44">Select Date</label>
                           <input type="date" name="fromDate" class="form-control rounded-0">
                         </div>
@@ -459,7 +413,7 @@ curl_close($curl);
                         </div>
                         <div class="form-group">
                           <label for="exampleFormControlInput44">Select Out Time</label>
-                          <input type="time" name="toTime" class="form-control rounded-0" >
+                          <input type="time" name="toTime" class="form-control rounded-0">
                         </div>
                         <div class="form-group">
                           <label for="exampleFormControlInput44">Reason</label>
@@ -483,7 +437,7 @@ curl_close($curl);
   </div>
 </div>
 <?php
-include("../include/footer.php");
+include ("../include/footer.php");
 ?>
 <script>
   $(document).ready(function () {
@@ -516,18 +470,18 @@ include("../include/footer.php");
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#project_form").validate({
-            rules: {
-              reason: {
-                    required: true,
-                },
-                fromDate: {
-                    required: true,
-                },
-                
-                
-            },
-        });
+  $(document).ready(function () {
+    $("#project_form").validate({
+      rules: {
+        reason: {
+          required: true,
+        },
+        fromDate: {
+          required: true,
+        },
+
+
+      },
     });
+  });
 </script>

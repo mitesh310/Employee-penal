@@ -201,10 +201,7 @@ $result_notification = json_decode($response,true);
                         <div class="nav nav-underline" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active"  data-toggle="tab" href="#all" role="tab" aria-controls="nav-home"
                             aria-selected="true">All (<?php echo $result_notification['data']['numberOfnotifications']; ?>)</a>
-                          <!-- <a class="nav-item nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab" aria-controls="nav-profile"
-                            aria-selected="false">Msgs (4)</a>
-                          <a class="nav-item nav-link" id="other-tab" data-toggle="tab" href="#other" role="tab" aria-controls="nav-contact"
-                            aria-selected="false">Others (3)</a> -->
+                         
                         </div>
                       </header>
 
@@ -214,11 +211,7 @@ $result_notification = json_decode($response,true);
                           <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="all-tabs">
 
                             <div class="media media-sm bg-warning-10 p-4 mb-0">
-                              <!-- <div class="media-sm-wrapper">
-                                <a href="user-profile.html">
-                                  <img src="images/user/user-sm-02.jpg" alt="User Image">
-                                </a>
-                              </div> -->
+                              
                               <?php
                                         foreach($result_notification['data']['notificationsData'] as $notification)
                                         {
@@ -245,12 +238,7 @@ $result_notification = json_decode($response,true);
                         </div>
                       </div>
 
-                      <!-- <footer class="border-top dropdown-notify-footer">
-                        <div class="d-flex justify-content-between align-items-center py-2 px-4">
-                          <span>Last updated 3 min ago</span>
-                          <a id="refress-button" href="javascript:" class="btn mdi mdi-cached btn-refress"></a>
-                        </div>
-                      </footer> -->
+                      
                     </div>
                   </li>
                   <!-- User Account -->
