@@ -444,7 +444,7 @@ include ("../include/footer.php");
     $("#clock_in").click(function () {
       $.ajax({
         url: "../ajax/clockin.php", success: function (result) {
-          $("#clock_in").hide();
+          // $("#clock_in").hide();
         }
       });
     });
