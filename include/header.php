@@ -124,7 +124,11 @@ $result_notification = json_decode($response,true);
                     </a>
                   </li> -->
                   <li <?php if($pageName=="Attendance") { ?> class="active" <?php } ?>>
-                    <a class="sidenav-item-link" href="../attendance">
+                    <?php
+                      $currentMonth = date('m');
+                      $currentYear = date('Y');
+                    ?>
+                    <a class="sidenav-item-link" href="../attendance/?month=<?php echo $currentMonth; ?>&year=<?php echo $currentYear; ?>">
                       <i class="mdi mdi-calendar"></i>
                       <span class="nav-text">Attendance</span>
                     </a>

@@ -32,6 +32,9 @@ curl_close($curl);
     .dataTables_wrapper .dataTables_filter label {
         margin-left: 10px;
     }
+    .dataTables_wrapper .dataTables_filter {
+    float: inline-end
+  }
 </style>
 
 

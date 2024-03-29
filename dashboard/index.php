@@ -65,35 +65,35 @@ curl_close($curl);
 
 
 <?php
-$clockin_status = "";
-$curl = curl_init();
+// $clockin_status = "";
+// $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://localhost:8080/clockinstatus',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => '{
-  "employeeId":"' . $_SESSION['employeeId'] . '"
-}',
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json'
-  ),
-)
-);
+// curl_setopt_array($curl, array(
+//   CURLOPT_URL => 'http://localhost:8080/clockinstatus',
+//   CURLOPT_RETURNTRANSFER => true,
+//   CURLOPT_ENCODING => '',
+//   CURLOPT_MAXREDIRS => 10,
+//   CURLOPT_TIMEOUT => 0,
+//   CURLOPT_FOLLOWLOCATION => true,
+//   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//   CURLOPT_CUSTOMREQUEST => 'POST',
+//   CURLOPT_POSTFIELDS => '{
+//   "employeeId":"' . $_SESSION['employeeId'] . '"
+// }',
+//   CURLOPT_HTTPHEADER => array(
+//     'Content-Type: application/json'
+//   ),
+// )
+// );
 
-$response = curl_exec($curl);
-curl_close($curl);
-$resultArray1 = json_decode($response, true);
-if ($resultArray1['status'] == '200') {
-  $clockin_status = true;
-} else {
-  $clockin_status = false;
-}
+// $response = curl_exec($curl);
+// curl_close($curl);
+// $resultArray1 = json_decode($response, true);
+// if ($resultArray1['status'] == '200') {
+//   $clockin_status = true;
+// } else {
+//   $clockin_status = false;
+// }
 
 if (isset($_POST['reqSubmit'])) {
   $fromTime = $_POST['fromTime'];

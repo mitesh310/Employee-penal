@@ -1,6 +1,7 @@
 <?php
 $pageName = "Attendance";
 include("../include/header.php");
+$workingHours ="";
 ?>
 
 <!-- get working hours api -->
@@ -23,38 +24,53 @@ $response = curl_exec($curl);
 $resultarray = json_decode($response,true);
 $workingHours = $resultarray['data'][0]['workingHours'];
 curl_close($curl);
-
 ?>
 
-<!-- create salary by employee id API -->
 <?php
-$currentMonth = date('n'); 
-$currentYear = date('Y'); 
 
-$curl = curl_init();
+// Get the current month and year
+$currentMonth = date('n');
+$currentYear = date('Y');
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'http://localhost:8080/createsalarybyempid',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => array(
-    'employeeId' => $_SESSION['employeeId'],
-    'month' =>  $currentMonth,
-    'year' => $currentYear,
-    'workinghours' => $workingHours,
-    'status' => 'pending'
-),
-));
+// Check if the selected month is greater than the current month
+if ($_GET['year'] > $currentYear || ($_GET['year'] == $currentYear && $_GET['month'] > $currentMonth)) {
+    // If so, set the selected month and year to the current month and year
+    $_GET['year'] = $currentYear;
+    $_GET['month'] = $currentMonth;
+}
 
-$response = curl_exec($curl);
+// Call the getSalary function with the corrected month and year
+$res = getSalary($_GET['month'], $_GET['year'], $workingHours);
+$resultsalary = json_decode($res, true);
 
-curl_close($curl);
-$resultsalary = json_decode($response,true);
+// Function to retrieve salary information
+function getSalary($month, $year, $workingHours)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://localhost:8080/createsalarybyempid',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array(
+            'employeeId' => $_SESSION['employeeId'],
+            'month' => $month,
+            'year' => $year,
+            'workinghours' => $workingHours,
+            'status' => 'pending'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    return $response;
+}
 ?>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -107,10 +123,57 @@ $resultsalary = json_decode($response,true);
             padding: 10px;
             text-align: center;
         }
+        
+        .btn-group, .btn-group-vertical{
+            display: none;
+        }
+        .fc-direction-ltr .fc-toolbar>*>:not(:first-child){
+            display: none;
+        }
     </style>
     <div class="content-body">
 
     <div class="container py-5" id="page-container">
+        <div class="row mb-5">
+                <div class="col-md-6">
+                <select id="mySelect" class="form-control" onchange="yearFunction()">
+                    <option value="">Select Year</option>
+                    <?php
+                    for($i=2022;$i<=2090;$i++)
+                    {
+                    ?>
+                    <option value="<?php echo $i; ?>" <?php
+                    if($i==$_GET['year'])
+                    {
+                        echo "selected";
+                    }
+                    ?>><?php echo $i; ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+                </div>
+                <div class="col-md-6">
+                <select class="form-control" id="monthSelect" onchange="monthFunction()">
+                    <option value="">Select Month</option>
+                    <?php
+                    for($i=1;$i<=12;$i++)
+                    {
+                        $formattedMonth = sprintf('%02d', $i);
+                    ?>
+                    <option value="<?php echo $formattedMonth; ?>" <?php
+                    if($formattedMonth==$_GET['month'])
+                    {
+                        echo "selected";
+                    }
+                    ?>><?php echo $formattedMonth; ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+                </div>
+                
+        </div> 
         <div class="row">
             <div class="col-md-12">
                 
@@ -202,13 +265,12 @@ $resultsalary = json_decode($response,true);
 include("../include/footer.php");
 ?>
 <?php 
-$sched_res = [];
+// $sched_res = [];
 attendanceshow();
 function attendanceshow()
 {
     $curl = curl_init();
-    $currentMonth = date('m');
-$currentYear = date('Y');
+
 
     curl_setopt_array($curl, array(
         CURLOPT_URL => 'http://localhost:8080/getattendencebyempid',
@@ -220,8 +282,8 @@ $currentYear = date('Y');
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => array(
-          'month' =>  $currentMonth,
-          'year' => $currentYear,
+            'year' => $_GET['year'],
+            'month' => $_GET['month'],
           "employeeId" => $_SESSION['employeeId']
         ),
       ));
@@ -262,8 +324,7 @@ $currentYear = date('Y');
         $array['clockin'] = "00:00";
         $array['clockout'] = "00:00";
         $array['breakcount'] = 0;
-       //$array['breakin0'] = "00:00";
-       // $array['breakout0'] = "00:00";
+
     }
     $sched_res[] = $array;
     $i++;
@@ -279,5 +340,28 @@ $currentYear = date('Y');
 ?>
 
 <script src="../js/script.js"></script>
+<script>
+function yearFunction() {
+    var month = "<?php echo $_GET['month']; ?>";
+    var selectedValue = document.getElementById("mySelect").value;
+    var params = "?year=" + selectedValue + "&month=" + month;
+    window.location.href = window.location.pathname + params;
+}
+
+function monthFunction() {
+    var year = "<?php echo $_GET['year']; ?>";
+    var selectedValue = document.getElementById("monthSelect").value;
+    var params = "?year=" + year + "&month=" + selectedValue;
+    window.location.href = window.location.pathname + params;
+}
+</script>
+
+<script>
+    $(document).ready(function(){
+        var year = <?php echo $_GET['year']; ?>;
+        var month = "<?php echo $_GET['month']; ?>";
+        calendar.gotoDate(year+'-'+month+'-01');
+    });
+</script>  
 
 </html>
